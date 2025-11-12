@@ -1,0 +1,482 @@
+/* Braneworld Design System */
+:root {
+  --braneworld-green: #1f3b2c;
+  --braneworld-amber: #e8c294;
+  --braneworld-umber: #614e3d;
+  --braneworld-parchment: #ede1cb;
+  --braneworld-charcoal: #2d2e2d;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--braneworld-parchment);
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.test-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+.braneworld-button {
+  background-color: var(--braneworld-charcoal);
+  color: var(--braneworld-amber);
+  border: 3px solid #000000;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px;
+  position: relative;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  /* Hand-drawn effect */
+  transform: rotate(-0.5deg);
+  box-shadow: 2px 2px 0px #000000, 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.braneworld-button::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  transform: rotate(1deg);
+  z-index: -1;
+  background: transparent;
+}
+
+.braneworld-button:hover {
+  background-color: #000000;
+  transform: rotate(0.5deg) scale(1.05);
+  transition: all 0.2s ease;
+}
+
+.braneworld-button:active {
+  transform: rotate(-0.2deg) scale(0.98);
+  box-shadow: 1px 1px 0px #000000, 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.skip-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  opacity: 0.7;
+  background: rgba(45, 45, 45, 0.8);
+}
+
+.skip-button:hover {
+  opacity: 1;
+  background: var(--braneworld-charcoal);
+}
+
+.braneworld-input {
+  background-color: var(--braneworld-parchment);
+  border: 2px solid var(--braneworld-umber);
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Story Sequence Styles */
+.story-body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  color: var(--braneworld-amber);
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.cosmic-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 2s ease-in-out;
+}
+
+/* Initial state - video visible */
+.cosmic-background.initial .video-overlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Story state - darker overlay during story sequence */
+.cosmic-background.story .video-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/stars.png") center/cover no-repeat;
+  z-index: 1;
+  transition: opacity 3s ease-out; /* Add smooth fade transition */
+}
+
+.background-image.fade-out {
+  opacity: 0;
+}
+
+.image-carousel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 3s ease-out;
+}
+
+.image-carousel.fade-out {
+  opacity: 0;
+}
+
+.carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7; /* Add opacity to images */
+  transition: opacity 2s ease-in-out;
+}
+
+.carousel-image.active {
+  opacity: 0.7;
+}
+
+.carousel-image:not(.active) {
+  opacity: 0;
+}
+
+/* Fallback for browsers that don't support video */
+.video-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(238, 201, 148, 0.8), transparent),
+    #000;
+  background-repeat: repeat;
+  background-size: 200px 100px;
+}
+
+/* Update story container z-index to appear above video */
+.story-container {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(238, 201, 148, 0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(238, 201, 148, 0.6),
+      transparent
+    ),
+    radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: twinkle 20s linear infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.nebula {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(31, 59, 44, 0.3) 0%,
+    transparent 70%
+  );
+  animation: nebula-drift 30s ease-in-out infinite alternate;
+}
+
+@keyframes nebula-drift {
+  0% {
+    transform: translateX(-10px) scale(1);
+  }
+  100% {
+    transform: translateX(10px) scale(1.1);
+  }
+}
+
+.story-container {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.story-text {
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 30px;
+  line-height: 1.9;
+  text-align: center;
+  max-width: 800px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 5px;
+  font-weight: 400;
+  color: var(--braneworld-parchment); /* Changed from amber to parchment */
+}
+
+.story-text em {
+  font-style: italic;
+  font-family: inherit;
+}
+
+.story-text.fade-out {
+  opacity: 0;
+  transition: opacity 2s ease-out;
+}
+
+.story-text.fade-in {
+  opacity: 0 !important;
+  transition: opacity 2s ease-in;
+}
+
+.story-text.fade-in.show {
+  opacity: 1 !important;
+}
+
+.visualizer-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.visualizer-video.show {
+  opacity: 1;
+}
+
+.cosmic-button {
+  background: linear-gradient(45deg, var(--braneworld-charcoal), #000);
+  color: var(--braneworld-amber);
+  border: 3px solid var(--braneworld-amber);
+  padding: 16px 32px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(238, 201, 148, 0.3);
+  opacity: 1;
+  transition: opacity 5s ease-in; /* Match the end-image timing */
+
+  /* Use Engravers MT */
+  font-family: "Engravers MT", "Cinzel", serif;
+}
+
+.cosmic-button:hover {
+  background: var(--braneworld-amber);
+  color: #000;
+  box-shadow: 0 0 30px rgba(238, 201, 148, 0.6);
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none;
+}
+
+.cosmic-button.fade-in {
+  opacity: 0;
+}
+
+.cosmic-button.fade-in.show {
+  opacity: 1;
+}
+
+.end-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/ofuego.png") center/cover no-repeat;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 5s ease-in;
+}
+
+.end-image.show {
+  opacity: 0.7; /* Adjust opacity as needed */
+}
+
+.final-text-fade {
+  opacity: 0;
+  transition: opacity 5s ease-in; /* Match the end-image and button timing */
+}
+
+.final-text-fade.show {
+  opacity: 1;
+}
+
+.transition-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+  z-index: 30;
+  display: none; /* Changed from flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+  pointer-events: none; /* Add this line */
+}
+
+.transition-screen:not(.hidden) {
+  display: flex;
+  pointer-events: auto;
+}
+
+.transition-screen.show {
+  opacity: 1;
+}
+
+.transition-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/train.png") center/cover no-repeat;
+  z-index: 31;
+  opacity: 0;
+  transition: opacity 3s ease-in;
+}
+
+.transition-image.show {
+  opacity: 0.5; /* Adjust as needed */
+}
+
+.transition-text {
+  position: relative;
+  z-index: 32;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 30px;
+  line-height: 1.9;
+  text-align: center;
+  max-width: 800px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 5px;
+  color: var(--braneworld-parchment);
+}
+
+.transition-text.typewriter::after {
+  content: "|";
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+}
+
+.flicker {
+  animation: flicker 1s ease-in-out;
+}
+
+.fade-to-black {
+  transition: opacity 2s ease-out !important;
+  opacity: 0 !important;
+}
